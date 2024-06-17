@@ -21,16 +21,20 @@ import auth from "../data/auth"
 export default function Login() {
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
-  // const [showPassword, setShowPassword] = useState(false);
 
-  // const handleClickShowPassword = () => setShowPassword((show) => !show);
-  // const handleMouseDownPassword = (event) => {
-  //   event.preventDefault();
-  // };
+
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   function config(data) {
     console.log(data)
     auth.postAuth(data)
+    window.location.reload()
   }
   return (
     <>
@@ -43,12 +47,12 @@ export default function Login() {
         autoComplete="off"
       >
         <form onSubmit={handleSubmit(config)}>
-          <TextField label="Name:" variant="outlined" {...register("name")} />
+          {/* <TextField label="Name:" variant="outlined" {...register("name")} />
           <br></br>
-          <TextField label="Password:" variant="outlined" {...register("password")} />
-          <br></br>
+          <TextField type="password" label="Password:" variant="outlined" {...register("password")} />
+          <br></br> */}
 
-          {/* <TextField {...register("name")}
+          <TextField {...register("name")}
             id="outlined-textarea"
             label="Name"
             placeholder="Enter your name here:"
@@ -71,7 +75,7 @@ export default function Login() {
               </InputAdornment>}
               label="Password" />
           </FormControl>
-          */}
+         
           <Button variant="contained" type="submit">
             Submit
           </Button>

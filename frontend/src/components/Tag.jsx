@@ -11,19 +11,25 @@ import Snackbar from "@mui/material/Snackbar"
 import CloseIcon from "@mui/icons-material/Close"
 import Alert from "@mui/material/Alert"
 import worker from '../data/worker'
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
 const Tag = observer(() => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm()
+  const { register, handleSubmit, reset, formState: { errors }, } = useForm()
 
-  function addTag(data) {
-    console.log(data)
-    tagRole.postTags(data)
-    reset()
-    setOpen(true)
+  const [isAdmin, setIsAdmin] = React.useState(true)
+
+  async function addTag(data) {
+    console.log(data);
+    try {
+      await tagRole.postTags(data);
+      reset();
+      setOpen(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (err) {
+      setIsAdmin(false)
+    }
   }
   const [open, setOpen] = React.useState(false)
   function contain(name) {
@@ -102,10 +108,19 @@ const Tag = observer(() => {
               })}
             />
             {errors.name && <Alert severity="error"> Exsit role.</Alert>}
+            {!isAdmin && (
+              <Alert variant="outlined" severity="error">
+                <Typography component="span">
+                  You are not allowed to add a role,<br />
+                  please enter as an administrator <Link component={RouterLink} to="/login">here</Link>
+                </Typography>
+              </Alert>
+            )}
             <br />
             <Button variant="contained" type="submit">
               Submit
             </Button>
+
           </form>
         </Box>
       </Box>
