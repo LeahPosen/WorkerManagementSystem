@@ -306,13 +306,12 @@ const Edit = observer(() => {
       const fetchWorker = async () => {
         const fetchedWorker = await worker.getByIdWorkers(id)
         setWorker(fetchedWorker)
-        console.log(fetchedWorker)
         setFormData({
           firstName: fetchedWorker?.firstName || "",
           lastName: fetchedWorker?.lastName || "",
           birthDate: fetchedWorker?.birthDate || "",
           startWorking: fetchedWorker?.startWorking || "",
-          gender: fetchedWorker?.gender || -1,
+          gender: fetchedWorker?.gender || 0,
         })
       }
       fetchWorker()
@@ -330,7 +329,7 @@ const Edit = observer(() => {
 
   const [formData, setFormData] = useState(null)
 
-  const { register, handleSubmit, reset, setValue } = useForm()
+  const { handleSubmit } = useForm()
 
 
   const handleInputChange = (e) => {
@@ -411,7 +410,7 @@ const Edit = observer(() => {
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="gender"
-              value={formData?.gender}
+              value={formData?.gender || 0}
               onChange={handleInputChange}
             >
               <FormControlLabel value={0} control={<Radio />} label="Male" />
