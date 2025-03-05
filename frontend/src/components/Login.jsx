@@ -11,17 +11,14 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import Button from "@mui/material/Button"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
-import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { useContext } from "react"
-import { Alert } from "@mui/material"
-import CircularProgress from "@mui/material/CircularProgress"
+import { Typography } from "@mui/material"
 import auth from "../data/auth"
 
 export default function Login() {
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
-
+  const [isAdmin, setIsAdmin] = useState(false)
 
 
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +31,7 @@ export default function Login() {
   function config(data) {
     console.log(data)
     auth.postAuth(data)
-    window.location.reload()
+    setIsAdmin(true)
   }
   return (
     <>
@@ -43,22 +40,24 @@ export default function Login() {
           "& .MuiTextField-root": { m: 1, width: "35ch" },
           display: "flex",
           flexWrap: "wrap",
+          flexDirection: "column",
         }}
         autoComplete="off"
       >
         <form onSubmit={handleSubmit(config)}>
-          {/* <TextField label="Name:" variant="outlined" {...register("name")} />
-          <br></br>
-          <TextField type="password" label="Password:" variant="outlined" {...register("password")} />
-          <br></br> */}
-
           <TextField {...register("name")}
             id="outlined-textarea"
             label="Name"
             placeholder="Enter your name here:"
             multiline />
 
-          <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+          <FormControl
+            sx={{
+              m: 1, width: '35ch', display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+            variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput {...register("password")}
               id="outlined-adornment-password"
@@ -75,11 +74,12 @@ export default function Login() {
               </InputAdornment>}
               label="Password" />
           </FormControl>
-         
+
           <Button variant="contained" type="submit">
             Submit
           </Button>
         </form>
+        {isAdmin && <Typography>Success</Typography>}
       </Box>
     </>
   )
